@@ -70,30 +70,61 @@ function initializeWebSocketServer() {
 }
 
 
-function processAudioData(saved_file_path) {
-    // Continue with your process
-    sendToTranscriptionServer(saved_file_path);
+async function processAudioData(savedFilePath) {
+    try {
+        const transcriptionResponse = await sendToTranscriptionServer(savedFilePath);
+        console.log('Transcription Response:', transcriptionResponse);
+
+        // Parse the JSON response string into an object
+        const transcriptionResponseObj = JSON.parse(transcriptionResponse);
+        const transcribedText = transcriptionResponseObj.text;
+        console.log('Transcribed Text:', transcribedText);
+
+        const sendClickTime = new Date().getTime();
+
+        // Call Next.js API with the transcribed text
+        const chatGPTResponse = await callNextJSChatGPT(transcribedText, sendClickTime);
+        console.log('ChatGPT Response:', chatGPTResponse);
+    } catch (error) {
+        console.error('Error in processing audio data:', error);
+    }
 }
 
+
 // Sends the audio file to the transcription server
-function sendToTranscriptionServer(filePath) {
+async function sendToTranscriptionServer(filePath) {
     const formData = new FormData();
     formData.append('file', fs.createReadStream(filePath));
     formData.append('temperature', '0.2');
     formData.append('response-format', 'json');
     console.log('Sending data to transcription server...' + filePath);
     logToFile('Sending data to transcription server...' + filePath);
-    axios.post('http://127.0.0.1:8080/inference', formData, {
-        headers: formData.getHeaders(),
-    })
-    .then((response) => {
-        console.log('Transcription server response:', response.data);
-        logToFile('Transcription server response: ' + JSON.stringify(response.data));
-    })
-    .catch((error) => {
+
+    try {
+        const response = await axios.post('http://127.0.0.1:8080/inference', formData, {
+            headers: formData.getHeaders(),
+        });
+        return JSON.stringify(response.data); // Return the response as a string
+    } catch (error) {
         console.error('Error sending data to transcription server:', error);
         logToFile('Error sending data to transcription server: ' + error.message);
-    });
+        return `Error: ${error.message}`; // Return error message as a string
+    }
+}
+
+
+async function callNextJSChatGPT(inputString, sendClickTime) {
+    try {
+        const response = await axios.post('http://localhost:3232/api/chatGPT', {
+            input: inputString,
+            sendClickTime: sendClickTime
+        });
+
+        console.log('Response from Next.js API:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error calling Next.js API:', error);
+    }
 }
 
 export default initializeWebSocketServer;

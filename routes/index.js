@@ -9,13 +9,13 @@ router.post('/incoming_call', (req, res) => {
     logToFile('Received an incoming call.');
 
     const twiml = new VoiceResponse();
-    twiml.say('Hello Izzy Mansurov.');
+    twiml.say('Hello your voice will be recorded. Hello, Izzy Mansurov.');
     try {
         console.log('Starting stream');
         logToFile('Starting stream');
         twiml.start().stream({
             name: 'stream',
-            url: 'ngrok or other wss url',
+            url: 'wss://ca5e-69-162-243-217.ngrok-free.app',
             throwOnError: true,
             wsClientOptions: {
                 rejectUnauthorized: false
@@ -36,12 +36,12 @@ router.post('/handle_recording', async (req, res) => {
     try {
         const inferenceData = await sendToWhisperServer(recordingUrl);
 
-        const twiml = new VoiceResponse();
-        if (inferenceData.text) {
-            twiml.say("Thank you, successfully sent to Whisper");
-        } else {
-            twiml.say('There was an error processing your message.');
-        }
+            const twiml = new VoiceResponse();
+            if (inferenceData.text) {
+                twiml.say("Thank you, successfully sent to Whisper");
+            } else {
+                twiml.say('There was an error processing your message.');
+            }
 
         res.type('text/xml');
         res.send(twiml.toString());
