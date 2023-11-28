@@ -10,15 +10,20 @@ import path from "path";
 import { fileURLToPath } from 'url';
 
 // Initializes and starts the WebSocket server
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Initializes and starts the WebSocket server
 function initializeWebSocketServer() {
+    const serverCertPath = path.join(__dirname, '..', 'server.crt');
+    const serverKeyPath = path.join(__dirname, '..', 'server.key');
+
     const server = https.createServer({
-        cert: fs.readFileSync('/Users/ismatullamansurov/Developer/twillio-server/server.crt'),
-        key: fs.readFileSync('/Users/ismatullamansurov/Developer/twillio-server/server.key'),
+        cert: fs.readFileSync(serverCertPath),
+        key: fs.readFileSync(serverKeyPath),
         passphrase: 'hello',
     });
 
-    const wss = new WebSocketServer({ server });
-    const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
     wss.on('connection', (ws) => {
         console.log("New connection initiated!");
