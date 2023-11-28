@@ -134,3 +134,6 @@ server.log
 
 # env
 .env.local
+
+# do not commit any music
+*.mp3
