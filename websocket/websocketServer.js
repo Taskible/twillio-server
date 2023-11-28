@@ -8,6 +8,7 @@ import { execSync } from 'child_process';
 import TwilioMediaStreamSaveAudioFile from 'twilio-media-stream-save-audio-file';
 import path from "path";
 import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
 
 // Initializes and starts the WebSocket server
 const __filename = fileURLToPath(import.meta.url);
@@ -23,6 +24,7 @@ function initializeWebSocketServer() {
         key: fs.readFileSync(serverKeyPath),
         passphrase: 'hello',
     });
+    const wss = new WebSocketServer({ server });
 
 
     wss.on('connection', (ws) => {
@@ -104,7 +106,7 @@ async function sendToTranscriptionServer(filePath) {
     formData.append('response-format', 'json');
     console.log('Sending data to transcription server...' + filePath);
     logToFile('Sending data to transcription server...' + filePath);
-
+    dotenv.config();
     try {
         const response = await axios.post(process.env.WHISPER_SERVER_ADDRESS, formData, {
             headers: formData.getHeaders(),

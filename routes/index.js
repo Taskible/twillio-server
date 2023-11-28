@@ -1,8 +1,12 @@
 // routes/index.js
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import VoiceResponse from 'twilio/lib/twiml/VoiceResponse.js';
 import logToFile from '../logger/log_to_file.js';
 import sendToWhisperServer from '../utils/sendToWhisperServer.js';
+
 const router = express.Router();
 
 router.post('/incoming_call', (req, res) => {
@@ -10,12 +14,16 @@ router.post('/incoming_call', (req, res) => {
 
     const twiml = new VoiceResponse();
     twiml.say('Hello your voice will be recorded. Hello, Izzy Mansurov.');
+    const websocketServer = process.env.WEBSOCKET_ADDRESS
+    console.log("type of websocket: " + typeof websocketServer);
     try {
         console.log('Starting stream');
         logToFile('Starting stream');
+
+        console.log("websocket address: " + websocketServer)
         twiml.start().stream({
             name: 'stream',
-            url: process.env.WEBSOCKET_ADDRESS,
+            url: websocketServer,
             throwOnError: true,
             wsClientOptions: {
                 rejectUnauthorized: false
