@@ -106,7 +106,7 @@ async function sendToTranscriptionServer(filePath) {
     logToFile('Sending data to transcription server...' + filePath);
 
     try {
-        const response = await axios.post('http://127.0.0.1:8080/inference', formData, {
+        const response = await axios.post(process.env.WHISPER_SERVER_ADDRESS, formData, {
             headers: formData.getHeaders(),
         });
         return JSON.stringify(response.data); // Return the response as a string

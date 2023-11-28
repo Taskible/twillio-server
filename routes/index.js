@@ -15,7 +15,7 @@ router.post('/incoming_call', (req, res) => {
         logToFile('Starting stream');
         twiml.start().stream({
             name: 'stream',
-            url: 'wss://ca5e-69-162-243-217.ngrok-free.app',
+            url: process.env.WEBSOCKET_ADDRESS,
             throwOnError: true,
             wsClientOptions: {
                 rejectUnauthorized: false
