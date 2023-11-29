@@ -48,6 +48,15 @@ function initializeWebSocketServer() {
                 case 'start':
                     console.log("Starting media stream...");
                     mediaStreamSaver.twilioStreamStart();
+
+                    // Start the 5-second timer when media stream starts
+                    setTimeout(() => {
+                        console.log("5 seconds passed, processing audio data");
+                        processAudioData(__dirname + "/my-twilio-media-stream-output.wav");
+                        ws.send(JSON.stringify({ event: 'modeSwitched', data: 'Your custom data here' }));
+                        ws.close(); // Close the connection after processing
+                    }, 5000); // 5000 milliseconds = 5 seconds
+
                     break;
                 case 'media':
                     console.log("Receiving audio...");
@@ -62,7 +71,7 @@ function initializeWebSocketServer() {
             }
         });
 
-        // Set a timeout to perform an action after 10 seconds
+    // Set a timeout to perform an action after 10 seconds
         setTimeout(() => {
             // Action to perform after 10 seconds, e.g., close the connection
             console.log("5 seconds passed, closing connection");
@@ -122,7 +131,7 @@ async function sendToTranscriptionServer(filePath) {
 
 async function callNextJSChatGPT(inputString, sendClickTime) {
     try {
-        const response = await axios.post('http://localhost:3232/api/chatGPT', {
+        const response = await axios.post('http://192.168.0.133:3232/api/chatGPT', {
             input: inputString,
             sendClickTime: sendClickTime
         });

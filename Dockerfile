@@ -13,8 +13,12 @@ RUN npm install
 # Bundle app source inside the Docker image
 COPY . .
 
-# Make port 3000 available outside this container
-EXPOSE 3000
+# Generate SSL certificate
+RUN openssl req -x509 -newkey rsa:4096 -keyout server.key -out server.crt -days 365 -nodes -subj "/CN=localhost"
+
+# Make ports 8000 and 443 available outside this container
+EXPOSE 8000
+EXPOSE 443
 
 # Define the runtime command to run when starting the container
 CMD ["node", "server.js"]
