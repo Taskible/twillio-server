@@ -10,7 +10,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/', routes);
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
     logToFile(`Server running on port ${PORT}`);
     console.log(`Server running on port ${PORT}`);
