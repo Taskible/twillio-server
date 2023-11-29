@@ -19,6 +19,7 @@ function initializeWebSocketServer() {
     const server = https.createServer();
     dotenv.config();
     const wssServerAddress = process.env.WEBSOCKET_ADDRESS;
+    logToFile("Wss server address: " + wssServerAddress);
     const wss = new WebSocketServer({ port: 443 });
 
 
