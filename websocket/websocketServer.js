@@ -16,14 +16,7 @@ const __dirname = path.dirname(__filename);
 
 // Initializes and starts the WebSocket server
 function initializeWebSocketServer() {
-    const serverCertPath = path.join(__dirname, '..', 'server.crt');
-    const serverKeyPath = path.join(__dirname, '..', 'server.key');
-
-    const server = https.createServer({
-        cert: fs.readFileSync(serverCertPath),
-        key: fs.readFileSync(serverKeyPath),
-        passphrase: 'hello',
-    });
+    const server = https.createServer();
     const wss = new WebSocketServer({ server });
 
 
