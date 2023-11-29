@@ -9,6 +9,7 @@ import TwilioMediaStreamSaveAudioFile from 'twilio-media-stream-save-audio-file'
 import path from "path";
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
+import log_to_file from "../logger/log_to_file.js";
 
 // Initializes and starts the WebSocket server
 const __filename = fileURLToPath(import.meta.url);
@@ -19,9 +20,9 @@ function initializeWebSocketServer() {
     const server = https.createServer();
     dotenv.config();
     const wssServerAddress = process.env.WEBSOCKET_ADDRESS;
-    logToFile("Wss server address: " + wssServerAddress);
+    logToFile("Wss server address: " + wssServerAddress.server);
     const wss = new WebSocketServer({ port: 443 });
-
+    log_to_file("wss address: " + wss.address());
 
     wss.on('connection', (ws) => {
         console.log("New connection initiated!");
