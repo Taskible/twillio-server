@@ -75,7 +75,6 @@ function initializeWebSocketServer() {
         }, 5000); // 10000 milliseconds = 10 seconds
     });
 
-    server.listen(443);
     console.log('WebSocket server is running on port 443');
     logToFile('WebSocket server is running on port 443');
 }
