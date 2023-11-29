@@ -17,7 +17,10 @@ const __dirname = path.dirname(__filename);
 // Initializes and starts the WebSocket server
 function initializeWebSocketServer() {
     const server = https.createServer();
-    const wss = new WebSocketServer({ server });
+    dotenv.config();
+    const wssServerAddress = process.env.WEBSOCKET_ADDRESS;
+    console.log("wssServerAddress: " + wssServerAddress);
+    const wss = new WebSocket(wssServerAddress)
 
 
     wss.on('connection', (ws) => {
@@ -108,7 +111,6 @@ async function sendToTranscriptionServer(filePath) {
     formData.append('response-format', 'json');
     console.log('Sending data to transcription server...' + filePath);
     logToFile('Sending data to transcription server...' + filePath);
-    dotenv.config();
     try {
         const response = await axios.post(process.env.WHISPER_SERVER_ADDRESS, formData, {
             headers: formData.getHeaders(),
