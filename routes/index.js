@@ -20,15 +20,11 @@ router.post('/incoming_call', (req, res) => {
         logToFile('Starting stream');
 
         console.log("websocket address: " + websocketServer)
-        twiml.start().stream({
-            name: 'stream',
+        twiml.connect().stream({
+            name: 'incomingCall',
             url: websocketServer,
-            throwOnError: true,
-            wsClientOptions: {
-                rejectUnauthorized: false
-            }
         });
-        twiml.pause({ length: 10 });
+        twiml.pause({ length: 20 });
     } catch (error) {
         console.error('Error starting stream:', error);
         logToFile('Error starting stream: ' + error);
