@@ -15,6 +15,8 @@ router.post('/incoming_call', (req, res) => {
     const isGreeting = process.env.GREETING === 'true';
     if (isGreeting) {
         twiml.say('Hello, thank you for calling. Please leave a message after the beep.');
+    } else {
+        twiml.beep();
     }
 
     const websocketServer = process.env.WEBSOCKET_ADDRESS
