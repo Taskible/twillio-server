@@ -12,7 +12,11 @@ router.post('/incoming_call', (req, res) => {
     logToFile('Received an incoming call from: ' + req.body.From);
 
     const twiml = new VoiceResponse();
-    twiml.say('Hello your voice will be recorded. Hello, Izzy Mansurov.');
+    const isGreeting = process.env.GREETING === 'true';
+    if (isGreeting) {
+        twiml.say('Hello, thank you for calling. Please leave a message after the beep.');
+    }
+
     const websocketServer = process.env.WEBSOCKET_ADDRESS
     console.log("type of websocket: " + typeof websocketServer);
     try {
@@ -20,8 +24,8 @@ router.post('/incoming_call', (req, res) => {
         logToFile('Starting stream');
 
         console.log("websocket address: " + websocketServer)
-        twiml.connect().stream({
-            name: 'incomingCall',
+        const connect = twiml.connect();
+        connect.stream({
             url: websocketServer,
         });
         twiml.pause({ length: 20 });
