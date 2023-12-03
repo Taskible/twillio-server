@@ -16,7 +16,10 @@ router.post('/incoming_call', (req, res) => {
     if (isGreeting) {
         twiml.say('Hello, thank you for calling. Please leave a message after the beep.');
     } else {
-        twiml.play("https://www.soundjay.com/button/sounds/beep-01a.mp3");
+        twiml.play({
+            loop: 1},
+            "https://www.soundjay.com/button/sounds/beep-01a.mp3"
+        );
     }
 
     const websocketServer = process.env.WEBSOCKET_ADDRESS
