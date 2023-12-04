@@ -18,7 +18,7 @@ router.post('/incoming_call', (req, res) => {
     } else {
         twiml.play({
             loop: 1},
-            "https://www.soundjay.com/button/sounds/beep-01a.mp3"
+            "https://www.soundjay.com/buttons/beep-07a.wav"
         );
     }
 
