@@ -13,16 +13,13 @@ router.post('/incoming_call', (req, res) => {
     logToFile('Received an incoming call from: ' + req.body.From);
 
     const twiml = new VoiceResponse();
-    const isGreeting = process.env.GREETING === 'true';
-    if (isGreeting) {
-        twiml.say('Hello, thank you for calling. Please leave a message after the beep.');
-    } else {
-        twiml.play({
-                loop: 1
-            },
-            "https://www.soundjay.com/buttons/beep-07a.wav"
-        );
-    }
+    twiml.say('Hello, thank you for calling Utah Junk Movers. We are utilizing an AI chatbot to help us schedule the calls. ');
+    twiml.play({
+            loop: 1
+        },
+        "https://www.soundjay.com/buttons/beep-07a.wav"
+    );
+
 
     const websocketServer = process.env.WEBSOCKET_ADDRESS
     const apiKey = process.env.API_KEY
