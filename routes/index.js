@@ -25,15 +25,15 @@ router.post('/incoming_call', (req, res) => {
     const apiKey = process.env.API_KEY
     console.log("type of websocket: " + typeof websocketServer);
     // Authenticate before setting up the WebSocket connection
-    authenticateWithApiKey(websocketServer, apiKey, (error) => {
-        if (error) {
-            console.error('Error authenticating:', error.message);
-            logToFile('Error authenticating: ' + error.message);
-            res.type('text/xml');
-            res.status(401).send('Authentication failed'); // Or another appropriate response
-            return;
-        }
-
+    // authenticateWithApiKey(websocketServer, apiKey, (error) => {
+    //     if (error) {
+    //         console.error('Error authenticating:', error.message);
+    //         logToFile('Error authenticating: ' + error.message);
+    //         res.type('text/xml');
+    //         res.status(401).send('Authentication failed'); // Or another appropriate response
+    //         return;
+    //     }
+    //
         try {
             console.log('Starting stream');
             logToFile('Starting stream');
@@ -53,7 +53,7 @@ router.post('/incoming_call', (req, res) => {
             res.type('text/xml');
             res.status(500).send('Error starting stream');
         }
-    });
+    // });
 });
 
 export default router;
