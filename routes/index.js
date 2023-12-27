@@ -21,6 +21,8 @@ router.post('/incoming_call', (req, res) => {
     const apiKey = process.env.API_KEY;
     const websocketUrlWithApiKey = `${websocketServer}?API-KEY=${apiKey}`;
     console.log("type of websocket: " + typeof websocketServer);
+    logToFile("WebSocket Server URL: " + websocketServer);
+    logToFile("Full WebSocket URL with API Key: " + websocketUrlWithApiKey);
     try {
         console.log('Starting stream');
         logToFile('Starting stream');
