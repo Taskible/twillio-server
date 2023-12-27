@@ -1,15 +1,19 @@
-// utils/nextJsApiHandler.js
 import fs from 'fs';
 import path from 'path';
 
-// This will place the log file in the project root. Adjust as needed.
 const logFilePath = path.resolve('server.log');
 
 function logToFile(message) {
     console.log(message);
     const timestamp = new Date().toISOString();
     const logMessage = `${timestamp} - ${message}\n`;
-    fs.appendFileSync(logFilePath, logMessage);
+
+    if (fs.existsSync(logFilePath)) {
+        const dateHeader = `--- Log for ${new Date().toLocaleDateString()} ---\n`;
+        fs.appendFileSync(logFilePath, dateHeader + logMessage);
+    } else {
+        fs.appendFileSync(logFilePath, logMessage);
+    }
 }
 
 export default logToFile;

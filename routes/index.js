@@ -11,7 +11,7 @@ router.post('/incoming_call', (req, res) => {
     logToFile('Received an incoming call from: ' + req.body.From);
 
     const twiml = new VoiceResponse();
-    twiml.say('Hello, thank you for calling Utah Junk Movers. We are utilizing an AI chatbot to help us schedule the calls. ');
+    twiml.say('Hello, thank you for calling Utah Junk Movers. We are utilizing an AI chatbot to help us schedule the calls. Please make sure your voice is not interrupted by backgrouned noises. Please, press 9 to connect to a real person.');
     twiml.play({
             loop: 1
         },
