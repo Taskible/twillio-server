@@ -31,7 +31,7 @@ router.post('/incoming_call', (req, res) => {
         const connect = twiml.connect();
         connect.stream({
             url: websocketUrlWithApiKey,
-            parameter: {
+            parameters: {
                 'API-KEY': apiKey,
             }
         });
