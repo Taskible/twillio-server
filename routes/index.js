@@ -29,12 +29,19 @@ router.post('/incoming_call', (req, res) => {
 
         console.log("websocket address: " + websocketServer);
         const connect = twiml.connect();
-        connect.stream({
+      const stream =  connect.stream({
             url: websocketUrlWithApiKey,
-            parameter: {
-                'API-KEY': apiKey,
-            }
         });
+
+        stream.parameter = {
+            name: 'FirstName',
+            value: 'Jane'
+        };
+
+        stream.parameter = {
+            name: 'api_key',
+            value: apiKey
+        };
         twiml.pause({length: 20});
 
         res.type('text/xml');
