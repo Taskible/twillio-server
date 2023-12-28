@@ -31,7 +31,7 @@ router.post('/incoming_call', (req, res) => {
         const response = new VoiceResponse();
         const connect = response.connect();
         const stream = connect.stream({
-            url: websocketUrlWithApiKey,
+            url: websocketServer,
         });
 
         stream.parameter = {
