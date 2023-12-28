@@ -28,22 +28,14 @@ router.post('/incoming_call', (req, res) => {
         logToFile('Starting stream');
 
         console.log("websocket address: " + websocketServer);
-        const response = new VoiceResponse();
-        const connect = response.connect();
+        const connect = twiml.connect();
         const stream = connect.stream({
             url: websocketServer,
         });
-
-        stream.parameter = {
-            name: 'FirstName',
-            value: 'Jane'
-        };
-
-        stream.parameter = {
+        stream.parameter({
             name: 'api_key',
             value: apiKey
-        };
-        console.log(response.toString());
+        });
         res.type('text/xml');
         res.send(twiml.toString());
     } catch (error) {
