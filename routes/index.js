@@ -28,8 +28,9 @@ router.post('/incoming_call', (req, res) => {
         logToFile('Starting stream');
 
         console.log("websocket address: " + websocketServer);
-        const connect = twiml.connect();
-      const stream =  connect.stream({
+        const response = new VoiceResponse();
+        const connect = response.connect();
+        const stream = connect.stream({
             url: websocketUrlWithApiKey,
         });
 
@@ -42,8 +43,7 @@ router.post('/incoming_call', (req, res) => {
             name: 'api_key',
             value: apiKey
         };
-        twiml.pause({length: 20});
-
+        console.log(response.toString());
         res.type('text/xml');
         res.send(twiml.toString());
     } catch (error) {
