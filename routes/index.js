@@ -8,7 +8,14 @@ dotenv.config();
 const router = express.Router();
 
 router.post('/incoming_call', (req, res) => {
-    logToFile('Received an incoming call from: ' + req.body.From);
+    const phoneNumber = req.body.From;
+    logToFile('Received an incoming call from: ' + phoneNumber);
+
+    // Server API key check
+    const serverApiKey = process.env.SERVER_API_KEY;
+    if (!serverApiKey || serverApiKey !== req.body.apiKey) {
+        return res.status(401).send('Invalid server API key');
+    }
 
     const twiml = new VoiceResponse();
     twiml.play({
@@ -17,9 +24,10 @@ router.post('/incoming_call', (req, res) => {
         "https://www.soundjay.com/buttons/beep-07a.wav"
     );
 
-    const websocketServer = process.env.WEBSOCKET_ADDRESS;
-    const apiKey = process.env.API_KEY;
-    const websocketUrlWithApiKey = `${websocketServer}?API-KEY=${apiKey}`;
+    // Determine WebSocket server address
+    const websocketServer = req.body.websocketAddress || process.env.WEBSOCKET_ADDRESS;
+    const websocketApiKey = process.env.WEBSOCKET_API_KEY;
+    const websocketUrlWithApiKey = `${websocketServer}?API-KEY=${websocketApiKey}`;
     console.log("type of websocket: " + typeof websocketServer);
     logToFile("WebSocket Server URL: " + websocketServer);
     logToFile("Full WebSocket URL with API Key: " + websocketUrlWithApiKey);
@@ -34,7 +42,11 @@ router.post('/incoming_call', (req, res) => {
         });
         stream.parameter({
             name: 'api_key',
-            value: apiKey
+            value: websocketApiKey
+        });
+        stream.parameter({
+            name: 'phone_number',
+            value: phoneNumber
         });
         res.type('text/xml');
         res.send(twiml.toString());
