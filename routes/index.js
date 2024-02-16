@@ -14,9 +14,9 @@ router.post('/incoming_call', (req, res) => {
     // Server API key check
     const serverApiKey = process.env.SERVER_API_KEY;
     console.log("server apikey: " + serverApiKey);
-    if (!serverApiKey || serverApiKey !== req.body.apiKey) {
-        return res.status(401).send('Invalid server API key');
-    }
+    // if (!serverApiKey || serverApiKey !== req.body.apiKey) {
+    //     return res.status(401).send('Invalid server API key');
+    // }
 
     const twiml = new VoiceResponse();
     twiml.play({
