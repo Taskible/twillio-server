@@ -13,11 +13,8 @@ router.post('/incoming_call', (req, res) => {
 
     // Server API key check
     const serverApiKey = process.env.SERVER_API_KEY;
-    if (!serverApiKey) {
-        console.log("No server API key.");
-    }
-
-    if (serverApiKey !== req.body.apiKey) {
+    print("server apikey: " + serverApiKey);
+    if (!serverApiKey || serverApiKey !== req.body.apiKey) {
         return res.status(401).send('Invalid server API key');
     }
 
