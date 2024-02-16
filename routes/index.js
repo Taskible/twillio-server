@@ -27,7 +27,7 @@ router.post('/incoming_call', (req, res) => {
 
     // Determine WebSocket server address
     const websocketServer = req.body.websocketAddress || process.env.WEBSOCKET_ADDRESS;
-    const websocketApiKey = process.env.WEBSOCKET_API_KEY;
+    const websocketApiKey = process.env.SERVER_API_KEY;
     const websocketUrlWithApiKey = `${websocketServer}?API-KEY=${websocketApiKey}`;
     console.log("type of websocket: " + typeof websocketServer);
     logToFile("WebSocket Server URL: " + websocketServer);
